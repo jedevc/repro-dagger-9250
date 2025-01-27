@@ -20,9 +20,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: "Create file"
+        run: |
+          mkdir /tmp/workplace
+          cd /tmp/workplace
+
+          echo -e "#!/bin/sh\necho hello world" > entrypoint.sh
+          ls -lh entrypoint.sh
+
       - name: "Test"
         id: test
         uses: dagger/dagger-for-github@v6
         with:
           version: v0.15.2
-          args: test with-exec --args "ls,-lh,entrypoint.sh" stdout
+          args: test --mydir=/tmp/workplace with-exec --args "ls,-lh,entrypoint.sh" stdout

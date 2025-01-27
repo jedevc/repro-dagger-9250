@@ -6,8 +6,7 @@ import (
 
 type Example struct{}
 
-func (m *Example) Test() *dagger.Container {
-	src := dag.Directory().WithNewFile("entrypoint.sh", "#!/bin/sh\necho foo")
+func (m *Example) Test(mydir *dagger.Directory) *dagger.Container {
 	return dag.Container().From("alpine").
-		WithFile("entrypoint.sh", src.File("entrypoint.sh"), dagger.ContainerWithFileOpts{Permissions: 0500})
+		WithFile("entrypoint.sh", mydir.File("entrypoint.sh"), dagger.ContainerWithFileOpts{Permissions: 0500})
 }
